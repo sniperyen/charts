@@ -1,0 +1,14 @@
+description: jenkins with some plugins
+icon: http://i.dyt2.cc/fc/78/08/16/e6/15/d5/c1/08/47/4d/b0/40/10/12/31.jpg
+keywords:
+- jenkins
+- alauda
+- docker
+- pipeline
+maintainers:
+- email: sywang@alauda.io
+  name: sywang
+name: jenkins
+sources:
+- https://github.com/alauda/alauda-pipeline-plugin
+version: 0.0.1
