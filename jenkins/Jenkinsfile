@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+
+    // stages
+    stages {
+      stage('Checkout') {
+        steps {
+          script {
+              echo "Checkout ..."
+          }
+        }
+      }
+      stage('CI'){
+        failFast true
+        parallel {
+          stage('Build') {
+              steps {
+                  script {
+                    echo "CI ..."
+                  }
+              }
+          }
+          stage('Code Scan') {
+              steps {
+                  script {
+                    echo "Code Scan ..."
+                  }
+              }
+          }
+        }
+      }
+      stage('Deploying') {
+          steps {
+              script {
+                 echo "Deploying ..."
+              }
+          }
+      }
+      stage('Test in sonobuoy') {
+          steps {
+              script {
+                  sh "kubectl get node"
+              }
+          }
+      }
+      stage('Promoting') {
+          steps {
+              script {
+                 echo "Promoting ..." 
+              }
+          }
+      }
+
+    }
+
+    post {
+        // 成功
+        success {
+          echo "Horay!"
+        }
+        // 失败
+        failure {
+            echo "damn!"
+        }
+        // 取消的
+        aborted {
+          echo "aborted!"
+        }
+    }
+}
