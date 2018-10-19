@@ -1,18 +1,7 @@
-description: GitLab Community Edition
-home: https://about.gitlab.com
-icon: https://gitlab.com/uploads/group/avatar/6543/gitlab-logo-square.png
+name: docker-compose
+description: A generated Helm Chart for docker-compose from Skippbox Kompose
+version: 0.0.1
 keywords:
-- git
-- ci
-- deploy
-- issue tracker
-- code review
-- wiki
-maintainers:
-- email: gtaylor@gc-taylor.com
-  name: Greg Taylor
-name: gitlab-ce
+  - docker-compose
 sources:
-- https://hub.docker.com/r/gitlab/gitlab-ce/
-- https://docs.gitlab.com/omnibus/
-version: 0.2.1
+home:
