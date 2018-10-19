@@ -1,8 +1,16 @@
 name: gitlab-ce
-description: A generated Helm Chart for gitlab-ce
-version: 0.0.1
+version: v0.1.1
+appVersion: 11.3.5
+description: GitLab Community Edition
 keywords:
-  - docker-compose
-  - gitlab-ce
+- git
+- ci
+- deploy
+- issue tracker
+- code review
+- wiki
+home: https://about.gitlab.com
 sources:
-home:
+- https://hub.docker.com/r/sameersbn/gitlab/
+- https://github.com/sameersbn/docker-gitlab
+icon: https://gitlab.com/uploads/group/avatar/6543/gitlab-logo-square.png

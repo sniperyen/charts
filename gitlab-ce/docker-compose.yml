@@ -27,12 +27,20 @@ services:
     - redis
     - postgresql
     ports:
-    - "1005:80"
-    - "10022:22"
+    - "31001:80"
+    - "31002:22"
     volumes:
     - /srv/docker/gitlab/gitlab:/home/git/data:Z
     environment:
     - DEBUG=false
+
+    - GITLAB_HOST=119.28.187.185
+    - GITLAB_PORT=31001
+    - GITLAB_SSH_PORT=31002
+    - GITLAB_RELATIVE_URL_ROOT=
+    - GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string
+    - GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alphanumeric-string
+    - GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alphanumeric-string
 
     - DB_ADAPTER=postgresql
     - DB_HOST=postgresql
@@ -49,14 +57,6 @@ services:
 
     - GITLAB_HTTPS=false
     - SSL_SELF_SIGNED=false
-
-    - GITLAB_HOST=119.28.187.185
-    - GITLAB_PORT=1005
-    - GITLAB_SSH_PORT=10022
-    - GITLAB_RELATIVE_URL_ROOT=
-    - GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string
-    - GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alphanumeric-string
-    - GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alphanumeric-string
 
     - GITLAB_ROOT_PASSWORD=
     - GITLAB_ROOT_EMAIL=
