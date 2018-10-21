@@ -9,5 +9,5 @@ spec:
   public: false
   type: Gitlab
   http:
-    host: {{ .Values.externalURL }}
+    host: {{ template "gitlab.externalURL" . }}
 {{- end }}

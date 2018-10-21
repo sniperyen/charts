@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: sameersbn/redis:4.0.9-1
+        image: {{ template "redis.image" .}}
         ports:
         - name: redis
           containerPort: 6379        

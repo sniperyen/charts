@@ -25,19 +25,19 @@ spec:
         ## Gitlab configuration
         ##
         - name: GITLAB_HOST
-          value: {{ .Values.gitlabHost }}
+          value: "{{ template "gitlab.host" . }}"
         - name: GITLAB_PORT
-          value: "{{ .Values.service.ports.http.nodePort }}"
+          value: "{{ template "gitlab.port" . }}"
         - name: GITLAB_SSH_PORT
-          value: "{{ .Values.service.ports.ssh.nodePort }}"
-        - name: GITLAB_RELATIVE_URL_ROOT
+          value: "{{ template "gitlab.sshPort" . }}"
         - name: GITLAB_ROOT_PASSWORD
-        {{- if default "" .Values.gitlabRootPassword }}
+        {{- if .Values.gitlabRootPassword }}
           valueFrom:
             secretKeyRef:
               name: {{ template "gitlab.fullname" . }}
               key: gitlab-root-password
-        {{ end }}
+        {{- end }}
+        - name: GITLAB_RELATIVE_URL_ROOT
         - name: GITLAB_ROOT_EMAIL
         - name: GITLAB_SECRETS_DB_KEY_BASE
           value: long-and-random-alphanumeric-string
@@ -223,7 +223,7 @@ spec:
         - name: OAUTH_AZURE_API_KEY
         - name: OAUTH_AZURE_API_SECRET
         - name: OAUTH_AZURE_TENANT_ID
-        image: sameersbn/gitlab:11.3.5
+        image: {{ template "portal.image" .}}
         name: gitlab
         ports:
         - name: http

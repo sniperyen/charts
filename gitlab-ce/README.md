@@ -22,12 +22,8 @@
 
 ```
 $ helm install --name my-release \
-   --set externalURL=http://your-domain.com stable/gitlab-ce
+   --set gitlabHost=150.109.66.42 .
 ```
-
-{{% notice info %}}
-执行 `helm search gitlab` 来搜索 `gitlab-ce` chart 的名称
-{{% /notice %}}
 
 > **Tip**: 使用 `helm list` 列出所有版本
 
@@ -43,13 +39,7 @@ $ helm delete my-release
 
 ## 配置
 
-可以到 [values.yaml](values.yaml) 中查看所有配置的默认值, 使用 `helm install` 的 `--set key = value [, key = value]` 参数设置每个参数. 例如,
-
-```
-$ helm install --name my-release \
-    --set externalURL=http://your-domain.com,gitlabRootPassword=pass1234 \
-    stable/gitlab-ce
-```
+可以到 [values.yaml](values.yaml) 中查看所有配置的默认值, 使用 `helm install` 的 `--set key = value [, key = value]` 参数设置每个参数.
 
 或者, 可以在安装 `chart` 时提供指定参数值的 `YAML` 文件. 例如:
 
@@ -70,7 +60,7 @@ In a private network environment, access to the Internet may be limited and a lo
 ## 数据存储
 
 在安装 chart 前，请先确认将用哪种方式来存储数据:
-
+ 
 1. Persistent Volume Claim (建议)
 2. Host path
 
@@ -113,40 +103,38 @@ In a private network environment, access to the Internet may be limited and a lo
 --set portal.persistence.enabled=false \
 --set portal.persistence.host.nodeName=<node name> \
 --set portal.persistence.host.path=<path on host to store data>
+--set portal.nodeSelector=nodeSelector="kubernetes.io/hostname=<node name>"
 --set database.persistence.enabled=false \
 --set database.persistence.host.nodeName=<node name> \
 --set database.persistence.host.path=<path on host to store data>
+--set database.nodeSelector=nodeSelector="kubernetes.io/hostname=<node name>"
 --set redis.persistence.enabled=false \
 --set redis.persistence.host.nodeName=<node name> \
 --set redis.persistence.host.path=<path on host to store data>
+--set redis.nodeSelector=nodeSelector="kubernetes.io/hostname=<node name>"
 ```
 
-如果禁用了 `persistence`, 并且没有配置 `host`, 则卷的内容只会持续与 `Pod` 一样长. 升级或更改某些设置可能会导致数据丢失, 不建议这样操作, 但如果只是测试，不在乎数据，可如下配置：
+## 访问方式
+
+### 通过 ip 访问
+
+部署 gitlab 时候，需要确定 gitlab 的访问方式, 如果没有可用的域名，也可以通过 `<nodeIP>:<nodePort>` 的方式来访问，示例如下：
 
 ```
---set portal.persistence.enabled=false \
---set database.persistence.enabled=false \
---set redis.persistence.enabled=false \
-```
-
-### Domain
-
-部署 gitlab 时候，需要指定 gitlab 的访问地址, 您必须传入 `externalURL`, 否则您最终将无法正常运行。
-
-如果没有可用的域名，也可以通过 `<nodeIP>:<nodePort>` 的方式来访问，不过需要在部署时候，提供 `nodePort` 参数:
-
-```
---set externalURL=http://<nodeIP>:<nodePort> \
---set service.type=NodePort \
---set service.ports.http.nodePort=<nodePort>
+helm install . --name gitlab-ce --namespace default \
+--set gitlabHost=119.28.187.185 \
+--set gitlabRootPassword=Gitlab12345 \
+--set service.ports.http.nodePort=31001 \
+--set service.ports.ssh.nodePort=31002 \
 ```
 
 nodePort 的值应该在 `30000` 到 `32767` 中间取值，不要与集群其它服务端口冲突。
 
+### 通过域名访问
 
-## 其它配置
-
-完整的 Helm chart 配置，执行 `helm fetch --untar -d <目标目录> stable/gitlab-ce` 来下载 Gitlab CE Helm chart。进去目录就可以看到 chart中的 `values.yaml` 文件
-{{% notice info %}}
-注意：目标目录需要提前创建好
-{{% /notice %}} 
+```
+helm install . --name gitlab-ce --namespace default \
+--set ingress.enabled=true \
+--set ingress.hosts.portal=gitlab.codreamer.online \
+--set gitlabRootPassword=Gitlab12345 \
+```

@@ -235,3 +235,39 @@ nodeSelector:
 {{- end }}
 {{- end }}
 {{- end }}
+
+{{- define "gitlab.protocal" -}}
+{{- if and .Values.ingress.enabled .Values.ingress.tls.enabled }}
+{{- printf "%s" "https" -}}
+{{- else }}
+{{- printf "%s" "http" -}}
+{{- end }}
+{{- end }}
+
+{{- define "gitlab.host" -}}
+{{- if .Values.ingress.enabled }}
+{{- printf "%s" .Values.ingress.hosts.portal -}}
+{{- else -}}
+{{- printf "%s" .Values.gitlabHost -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "gitlab.port" -}}
+{{- if .Values.ingress.enabled -}}
+{{ .Values.service.ports.http.port }}
+{{- else -}}
+{{ .Values.service.ports.http.nodePort }}
+{{- end -}}
+{{- end -}}
+
+{{- define "gitlab.sshPort" -}}
+{{- if .Values.ingress.enabled -}}
+{{ .Values.service.ports.ssh.port }}
+{{- else -}}
+{{ .Values.service.ports.ssh.nodePort }}
+{{- end -}}
+{{- end -}}
+
+{{- define "gitlab.externalURL" -}}
+{{- printf "%s://%s:%s" (include "gitlab.protocal" .) (include "gitlab.host" .) (include "gitlab.port" .) -}}
+{{- end -}}

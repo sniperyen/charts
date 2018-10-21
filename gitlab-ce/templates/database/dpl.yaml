@@ -33,7 +33,7 @@ spec:
             secretKeyRef:
               name: "{{ template "gitlab.fullname" . }}"
               key: db-password
-        image: sameersbn/postgresql:10
+        image: {{ template "database.image" .}}
         name: postgresql
         resources:
 {{ toYaml .Values.database.resources | indent 10 }}        

@@ -1,6 +1,6 @@
 name: gitlab-ce
 version: v0.1.1
-appVersion: 11.3.5
+appVersion: 11.4.0
 description: GitLab Community Edition
 keywords:
 - git
